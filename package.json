@@ -1,0 +1,20 @@
+{
+    "name": "dashboard-service",
+    "private": true,
+    "version": "0.0.1",
+    "engines": {
+        "node": ">=0.10.3"
+    },
+    "scripts": {
+        "start": "node index.js",
+        "test": "mocha test/"
+    },
+    "devDependencies": {
+        "expect.js": "^0.3.1",
+        "mocha": "^2.2.5",
+        "sinon": "^1.15.3"
+    },
+    "dependencies": {
+        "persephone-ms": "GuardTime/persephone-ms"
+    }
+}
