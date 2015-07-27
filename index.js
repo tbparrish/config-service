@@ -1,49 +1,48 @@
 var MicroService = require('persephone-ms'),
     ms = new MicroService(),
 
-    Promise = ms.Promise,
-    Dashboard = ms.models.Dashboard,
-    Panel = ms.models.Panel;
+    Promise = ms.promise;
 
-function clearAll() {
-
-  return Promise.node.call(models.Dashboard.find, {}).then(function (dashboards) {
-    var dashboardDeletePromises = dashboards.map(function (dashboard) {
-      var panelsDeletePromises = dashboard.panels.map(function (panel) { return Promise.node.call(panel.remove); })
-      return Promise.all(panelsDeletePromises);
-    }
-    return Promise.all(dashboardDeletePromises);
+function dropAndSync() {
+  return Promise.promise(function (resolve, reject) {
+    var db = ms._persistence.db;
+    db.drop(function (err) {
+      if (err) reject(err); else db.sync(function (err) {
+        if (err) reject(err); else resolve();
+      });
+    });
   });
 }
 
-clearAll();
+ms.ready.then(dropAndSync).then(function (){
 
-var system = new models.Dashboard({
-  type: 'overwatch', title: "Overwatch Metrics", description: "Measures of Overwatch performance",
-  panels: [
-    new models.Panel(new { type: '', query: '', title: "Memory Utilization", x: 0, y: 8, w: 2, h: 4 }),
-    new models.Panel(new { type: '', query: '', title: "TCP States", x: 0, y: 12, w: 2, h: 4 }),
-    new models.Panel(new { type: '', query: '', title: "Network (eth0) Octets", x: 2, y: 4, w: 2, h: 4 }),
-    new models.Panel(new { type: '', query: '', title: "Network (lo) Octets", x: 0, y: 4, w: 2, h: 4 }),
-    new models.Panel(new { type: '', query: '', title: "Disk Utilization", x: 2, y: 8, w: 2, h: 4 }),
-    new models.Panel(new { type: '', query: '', title: "Load Averages", x: 0, y: 0, w: 4, h: 4 }),
-    new models.Panel(new { type: '', query: '', title: "Local Port Connections", x: 2, y: 12, w: 2, h: 4 })
-  ] 
+  var system = new ms.models.Dashboard({
+    type: 'overwatch', title: "Overwatch Metrics", description: "Measures of Overwatch performance",
+    panels: [
+      { type: 'line', query: 'overwatch-memory', title: "Memory Utilization" },
+      { type: 'pie', query: 'overwatch-tcp', title: "TCP States" },
+      { type: 'line', query: 'overwatch-eth0', title: "Network (eth0) Octets" },
+      { type: 'line', query: 'overwatch-lo', title: "Network (lo) Octets" },
+      { type: 'line', query: 'overwatch-disk', title: "Disk Utilization" },
+      { type: 'bar', query: 'overwatch-load', title: "Load Averages" },
+      { type: 'bar', query: 'overwatch-ports', title: "Local Port Connections" }
+    ] 
+  });
+
+  system.save();
+
+  var ksi = new ms.models.Dashboard({
+    type: 'ksi', title: "KSI Metrics", description: "Measures of KSI performance",
+    panels: [
+      { type: 'line', query: 'ksi-customers', title: "Customers Seen" },
+      { type: 'line', query: 'ksi-rounds', title: "Rounds Seen" },
+      { type: 'number', query: 'ksi-highest', title: "Highest Round Number" },
+      { type: 'line', query: 'ksi-response-time', title: "Percentiles Response Time (ms)" },
+      { type: 'pie', query: 'ksi-availability', title: "Node Availability" },
+      { type: 'bar', query: 'ksi-activity', title: "Activity By Source" },
+      { type: 'bar', query: 'ksi-persistence', title: "CDDB Persistence State" }
+    ] 
+  });
+
+  ksi.save();
 });
-
-system.save();
-
-var ksi = new models.Dashboard({
-  type: 'ksi', title: "KSI Metrics", description: "Measures of KSI performance",
-  panels: [
-    new models.Panel(new { type: '', query: '', title: "Customers Seen", x: 0, y: 0, w: 1, h: 2 }),
-    new models.Panel(new { type: '', query: '', title: "Rounds Seen", x: 1, y: 0, w: 1, h: 2 }),
-    new models.Panel(new { type: '', query: '', title: "Highest Round Number", x: 2, y: 0, w: 1, h: 2 }),
-    new models.Panel(new { type: '', query: '', title: "Percentiles Response Time (ms)", x: 0, y: 10, w: 3, h: 4 }),
-    new models.Panel(new { type: '', query: '', title: "Node Availability", x: 0, y: 2, w: 2, h: 4 }),
-    new models.Panel(new { type: '', query: '', title: "Activity By Source", x: 0, y: 6, w: 3, h: 4 }),
-    new models.Panel(new { type: '', query: '', title: "CDDB Persistence State", x: 2, y: 2, w: 1, h: 4 }),
-  ] 
-});
-
-ksi.save();
