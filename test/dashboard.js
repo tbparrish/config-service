@@ -22,6 +22,7 @@ describe('Config service', function () {
 
   it('should return preconfigured dashboards', function (done) {
     ms.query('DashboardGet', { type: 'test' }).then(function (overwatch) {
+      expect(overwatch.type).to.be('test');
       done();
     }).catch(done);
   });

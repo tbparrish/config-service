@@ -12,7 +12,8 @@
     "devDependencies": {
         "expect.js": "^0.3.1",
         "mocha": "^2.2.5",
-        "sinon": "^1.15.3"
+        "sinon": "^1.15.3",
+        "sqlite3": "^3.0.9"
     },
     "dependencies": {
         "persephone-ms": "GuardTime/persephone-ms"
