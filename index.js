@@ -14,35 +14,44 @@ function dropAndSync() {
   });
 }
 
-ms.ready.then(dropAndSync).then(function (){
+var seedPromise = ms.ready.then(dropAndSync).then(function (){
 
-  var system = new ms.models.Dashboard({
-    type: 'overwatch', title: "Overwatch Metrics", description: "Measures of Overwatch performance",
+  var system = {
+    type: 'overwatch', title: "Overwatch Metrics",
     panels: [
-      { type: 'line', query: 'overwatch-memory', title: "Memory Utilization" },
-      { type: 'pie', query: 'overwatch-tcp', title: "TCP States" },
-      { type: 'line', query: 'overwatch-eth0', title: "Network (eth0) Octets" },
-      { type: 'line', query: 'overwatch-lo', title: "Network (lo) Octets" },
-      { type: 'line', query: 'overwatch-disk', title: "Disk Utilization" },
-      { type: 'bar', query: 'overwatch-load', title: "Load Averages" },
-      { type: 'bar', query: 'overwatch-ports', title: "Local Port Connections" }
+      { chart: 'line', aggregation: 'overwatch-memory', title: "Memory Utilization" },
+      { chart: 'pie', aggregation: 'overwatch-tcp', title: "TCP States" },
+      { chart: 'line', aggregation: 'overwatch-eth0', title: "Network (eth0) Octets" },
+      { chart: 'line', aggregation: 'overwatch-lo', title: "Network (lo) Octets" },
+      { chart: 'line', aggregation: 'overwatch-disk', title: "Disk Utilization" },
+      { chart: 'bar', aggregation: 'overwatch-load', title: "Load Averages" },
+      { chart: 'bar', aggregation: 'overwatch-ports', title: "Local Port Connections" }
     ] 
-  });
+  };
 
-  system.save();
+  return Promise.node.call(ms.models.Dashboard.create, system);
 
-  var ksi = new ms.models.Dashboard({
-    type: 'ksi', title: "KSI Metrics", description: "Measures of KSI performance",
+}).then(function () {
+
+  var ksi = {
+    type: 'ksi', title: "KSI Metrics",
     panels: [
-      { type: 'line', query: 'ksi-customers', title: "Customers Seen" },
-      { type: 'line', query: 'ksi-rounds', title: "Rounds Seen" },
-      { type: 'number', query: 'ksi-highest', title: "Highest Round Number" },
-      { type: 'line', query: 'ksi-response-time', title: "Percentiles Response Time (ms)" },
-      { type: 'pie', query: 'ksi-availability', title: "Node Availability" },
-      { type: 'bar', query: 'ksi-activity', title: "Activity By Source" },
-      { type: 'bar', query: 'ksi-persistence', title: "CDDB Persistence State" }
+      { chart: 'line', aggregation: 'ksi-customers', title: "Customers Seen" },
+      { chart: 'line', aggregation: 'ksi-rounds', title: "Rounds Seen" },
+      { chart: 'number', aggregation: 'ksi-highest', title: "Highest Round Number" },
+      { chart: 'line', aggregation: 'ksi-response-time', title: "Percentiles Response Time (ms)" },
+      { chart: 'pie', aggregation: 'ksi-availability', title: "Node Availability" },
+      { chart: 'bar', aggregation: 'ksi-activity', title: "Activity By Source" },
+      { chart: 'bar', aggregation: 'ksi-persistence', title: "CDDB Persistence State" }
     ] 
-  });
+  };
 
-  ksi.save();
+  return Promise.node.call(ms.models.Dashboard.create, ksi);
+
+});
+
+seedPromise.then(function () {
+  ms.log.info("Dashboards successfully seeded.");
+}).catch(function (err) {
+  ms.log.error("Error while seeding dashboards", err);
 });
