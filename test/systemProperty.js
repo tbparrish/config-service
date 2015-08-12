@@ -36,4 +36,12 @@ describe('System properties', function () {
       done();
     }).catch(done);
   });
+
+  it('should get a single property, as well as arrays of properties', function (done) {
+
+    ms.query('SystemPropertiesGet', { props: "a.c" }).then(function (props) {
+      expect(props["a.c"]).to.be('2');
+      done();
+    }).catch(done);
+  })
 });
