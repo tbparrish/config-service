@@ -54,7 +54,7 @@ var seedPromise = ms.ready.then(dropAndSync).then(function (){
     "test": "value"
   };
 
-  return ms.command('SystemPropertiesSet', { props: properties });
+  return ms.command('SystemPropertiesSet', { props: config.systemProperties });
 });
 
 seedPromise.then(function () {
