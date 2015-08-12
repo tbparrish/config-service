@@ -48,10 +48,17 @@ var seedPromise = ms.ready.then(dropAndSync).then(function (){
 
   return Promise.node.call(ms.models.Dashboard.create, ksi);
 
+}).then(function () {
+
+  var properties = {
+    "test": "value"
+  };
+
+  return ms.command('SystemPropertiesSet', { props: properties });
 });
 
 seedPromise.then(function () {
-  ms.log.info("Dashboards successfully seeded.");
-}).catch(function (err) {
-  ms.log.error("Error while seeding dashboards", err);
+  ms.log.info("Dashboards and properties successfully seeded.");
+}).timeout(5000).catch(function (err) {
+  ms.log.error("Error while seeding data", err);
 });
