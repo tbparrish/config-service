@@ -1,18 +1,18 @@
 var Panel = model({
   name: 'Panel',
   properties: {
-    chart: { type: 'text', required: true },
-    aggregation: { type: 'text', required: true },
-    title: { type: 'text', required: true }
+    chart: { type: Sequelize.STRING, allowNull: false },
+    aggregation: { type: Sequelize.STRING, allowNull: false },
+    title: { type: Sequelize.STRING, allowNull: false }
   }
 });
 
 var Dashboard = model({
   name: 'Dashboard',
   properties: {
-    type: { type: 'text', required: true },
-    title: { type: 'text', required: true }
+    type: { type: Sequelize.STRING, allowNull: false },
+    title: { type: Sequelize.STRING, allowNull: false }
   }
 });
 
-Dashboard.hasMany('panels', Panel, {}, { autoFetch: true });
+Dashboard.hasMany(Panel);

@@ -14,9 +14,11 @@ describe('Config service', function () {
 
   before(function (done) {
     ms.ready.then(function () {
-      ms._persistence.models.Dashboard.create(testDashboard, function (err, result) {
-        if (err) done(err); else done();
-      });
+      return ms._persistence.models.Dashboard.create(testDashboard);
+    }).then(function (dashboard) {
+      return ms.promise.map(testDashboard.panels, function (panel) { return dashboard.createPanel(panel); });
+    }).then(function () {
+      done();
     }).catch(done);
   });
 

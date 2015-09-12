@@ -11,7 +11,7 @@ describe('System properties', function () {
 
   it('should create new properties and retrieve them', function (done) {
 
-    ms.command('SystemPropertiesSet', { props: { "a.b" : 1, "a.c" : 2 }}).then(function () {
+    ms.command('SystemPropertiesSet', { props: { "a.b" : "1", "a.c" : "2" }}).then(function () {
       return ms.query('SystemPropertiesGet', { props: [ "a.b", "a.c" ] });
     }).then(function (props) {
 
@@ -27,7 +27,7 @@ describe('System properties', function () {
 
   it('should update existing properties and create new ones in a single request', function (done) {
 
-    ms.command('SystemPropertiesSet', { props: { "a.b" : 3, "x.y": 4 }}).then(function () {
+    ms.command('SystemPropertiesSet', { props: { "a.b" : "3", "x.y": "4" }}).then(function () {
       return ms.query('SystemPropertiesGet', { props: [ "a.b", "a.c", "x.y" ] });
     }).then(function (props) {
       expect(props["a.b"]).to.be('3');
@@ -43,5 +43,5 @@ describe('System properties', function () {
       expect(props["a.c"]).to.be('2');
       done();
     }).catch(done);
-  })
+  });
 });

@@ -3,18 +3,17 @@ var MicroService = require('persephone-ms'),
 
     Promise = ms.promise;
 
-function dropAndSync() {
-  return Promise.promise(function (resolve, reject) {
-    var db = ms._persistence.db;
-    db.drop(function (err) {
-      if (err) reject(err); else db.sync(function (err) {
-        if (err) reject(err); else resolve();
-      });
+function createDashboard(data) {
+  return ms.models.Dashboard.create(data).then(function (dashboard) {
+    return Promise.map(data.panels, function (panel) {
+      return dashboard.createPanel(panel);
     });
   });
 }
 
-var seedPromise = ms.ready.then(dropAndSync).then(function (){
+var seedPromise = ms.ready.then(function () {
+  return ms._persistence._sync(true);
+}).then(function (){
 
   var system = {
     type: 'overwatch', title: "Overwatch Metrics",
@@ -29,7 +28,7 @@ var seedPromise = ms.ready.then(dropAndSync).then(function (){
     ] 
   };
 
-  return Promise.node.call(ms.models.Dashboard.create, system);
+  return createDashboard(system);
 
 }).then(function () {
 
@@ -46,14 +45,9 @@ var seedPromise = ms.ready.then(dropAndSync).then(function (){
     ] 
   };
 
-  return Promise.node.call(ms.models.Dashboard.create, ksi);
+  return createDashboard(ksi);
 
 }).then(function () {
-
-  var properties = {
-    "test": "value"
-  };
-
   return ms.command('SystemPropertiesSet', { props: ms.config.systemProperties });
 });
 
