@@ -22,5 +22,10 @@ on('SystemPropertiesSet', function (data) {
                         .toArray();
   });
 
-  return Promise.join(Promise.all(updateExistingProps), Promise.all(createNewProps));
+  return Promise.join( Promise.all(updateExistingProps), Promise.all(createNewProps) ).then( function(promises){ 
+    var existing = promises[0].map( function(setting){ return JSON.parse(setting.value); }).map( function(setting){ return JSON.parse(setting); } );
+    var created  = promises[1].map( function(setting){ return JSON.parse(setting.value); }).map( function(setting){ return JSON.parse(setting); } );
+    event( 'SystemPropertiesUpdatedEvent', existing.concat(created) ); 
+  });
+
 });
