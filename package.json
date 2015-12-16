@@ -8,6 +8,7 @@
   "scripts": {
     "ci-test": "mocha --reporter mocha-tap-reporter > test.tap",
     "ci-lint": "jshint . --exclude-path .gitignore --reporter=checkstyle > checkstyle-results.xml",
+    "obfuscate": "./bin/obfuscate.sh",
     "start": "node index.js",
     "build": "exit 0",
     "test": "mocha test/"
@@ -17,10 +18,11 @@
     "jshint": "^2.8.0",
     "mocha": "^2.3.4",
     "mocha-tap-reporter": "^0.1.3",
+    "obfuscator": "^0.5.4",
     "sinon": "^1.15.3",
     "sqlite3": "^3.0.9"
   },
   "dependencies": {
-    "persephone-ms": "git@github.com:GuardTime/persephone-ms.git#bf276beee055c22a63bd38322f7529e1fbcb0c94"
+    "persephone-ms": "git@github.com:GuardTime/persephone-ms.git#380fa77fde426933ab59d91994172d811627634e"
   }
 }
