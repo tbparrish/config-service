@@ -1,22 +1,26 @@
 {
-    "name": "config-service",
-    "private": true,
-    "version": "0.0.1",
-    "engines": {
-        "node": ">=0.10.3"
-    },
-    "scripts": {
-        "start": "node index.js",
-        "build": "exit 0",
-        "test": "mocha test/"
-    },
-    "devDependencies": {
-        "expect.js": "^0.3.1",
-        "mocha": "^2.2.5",
-        "sinon": "^1.15.3",
-        "sqlite3": "^3.0.9"
-    },
-    "dependencies": {
-        "persephone-ms": "git@github.com:GuardTime/persephone-ms.git#ba0181857acecd1f7fd368730317b32b36f3cef7"
-    }
+  "name": "config-service",
+  "private": true,
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=0.10.3"
+  },
+  "scripts": {
+    "ci-test": "mocha --reporter mocha-tap-reporter > test.tap",
+    "ci-lint": "jshint . --exclude-path .gitignore --reporter=checkstyle > checkstyle-results.xml",
+    "start": "node index.js",
+    "build": "exit 0",
+    "test": "mocha test/"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "jshint": "^2.8.0",
+    "mocha": "^2.3.4",
+    "mocha-tap-reporter": "^0.1.3",
+    "sinon": "^1.15.3",
+    "sqlite3": "^3.0.9"
+  },
+  "dependencies": {
+    "persephone-ms": "git@github.com:GuardTime/persephone-ms.git#ba0181857acecd1f7fd368730317b32b36f3cef7"
+  }
 }
