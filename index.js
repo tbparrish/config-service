@@ -12,7 +12,7 @@ function createDashboard(data) {
 }
 
 var seedPromise = ms.ready.then(function () {
-  return ms._persistence._sync(true);
+  return ms._persistence._sync(MicroService.config.environment === "development");
 }).then(function (){
 
   var system = {
