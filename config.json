@@ -1,24 +1,13 @@
 {
   "db": "postgres://HaloAdmin:P455w0rd88@postgresql/halo",
   "rabbit": {
-    "server": "rabbitmq"
+    "user": "guest",
+    "pass": "guest",
+    "server": "rabbitmq",
+    "port": 5672
   },
-
-  "systemProperties": {
-    "persephone.network.ntp.servers": "test",
-    "persephone.network.dns.servers": "test",
-    "persephone.network.dns.domain": "test",
-    "persephone.system.logstash.hostname": "test",
-    "persephone.system.logstash.port": "test",
-    "persephone.system.logstash.protocol": "test",
-    "persephone.system.rabbitmq.hostname": "test",
-    "persephone.system.rabbitmq.port": "test",
-    "persephone.system.rabbitmq.ssl.enabled": "test",
-    "persephone.system.rabbitmq.authmethod": "test",
-    "persephone.system.rabbitmq.vhost": "test",
-    "persephone.system.rabbitmq.exchange": "test",
-    "persephone.system.rabbitmq.routingkey": "test",
-    "persephone.system.rabbitmq.keepalive": "test",
-    "persephone.system.authentication.defaultprovider": "test"
+  "logstash": {
+    "tcp_port": 39997,
+    "udp_port": 40000
   }
 }

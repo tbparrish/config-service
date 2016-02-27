@@ -25,7 +25,7 @@ var seedPromise = ms.ready.then(function () {
       { chart: 'line', aggregation: 'overwatch-disk', title: "Disk Utilization" },
       { chart: 'bar', aggregation: 'overwatch-load', title: "Load Averages" },
       { chart: 'bar', aggregation: 'overwatch-ports', title: "Local Port Connections" }
-    ] 
+    ]
   };
 
   return createDashboard(system);
@@ -42,13 +42,26 @@ var seedPromise = ms.ready.then(function () {
       { chart: 'pie', aggregation: 'ksi-availability', title: "Node Availability" },
       { chart: 'bar', aggregation: 'ksi-activity', title: "Activity By Source" },
       { chart: 'bar', aggregation: 'ksi-persistence', title: "CDDB Persistence State" }
-    ] 
+    ]
   };
 
   return createDashboard(ksi);
 
 }).then(function () {
-  return ms.command('SystemPropertiesSet', { props: ms.config.systemProperties });
+  var logstash = ms.config.logstash;
+  var rabbit = ms.config.rabbit;
+  var overwatch = ms.config.overwatch;
+  return ms.command('SystemPropertiesSet', {
+    props: {
+      deployment: JSON.stringify({
+        overwatch: { hostname: overwatch || "localhost" },
+        rabbitmq: { hostname: rabbit && rabbit.server || "localhost",
+          port: rabbit && rabbit.port || 5672 },
+        logstash: { tcp_port: logstash && (logstash.tcp_port || logstash.port) || 40000,
+          udp_port: logstash && (logstash.udp_port || logstash.port) || 40000 }
+      })
+    }
+  });
 });
 
 seedPromise.then(function () {
