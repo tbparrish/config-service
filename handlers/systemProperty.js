@@ -7,7 +7,6 @@ on('SystemPropertiesGet', function (data) {
 });
 
 on('SystemPropertiesSet', function (data) {
-
   // Currently we are allowed to set any property – might want to restrict this only to existing props
   var existingProps = models.SystemProperty.findAll({ where: { name: { $in: Object.keys(data.props) }}});
   var updateExistingProps = Promise.map(existingProps, function (prop) {
@@ -18,14 +17,21 @@ on('SystemPropertiesSet', function (data) {
   var existingKeys = Promise.map(existingProps, function (prop) { return prop.name; });
   var createNewProps = existingKeys.then(function (existing) {
     return _(data.props).filter(function (v, k) { return existing.indexOf(k) === -1; })
-                        .map(function (v, k) { return models.SystemProperty.create({ name: k, value: JSON.stringify(v) }); })
+                        .map(function (v, k) {
+                          return models.SystemProperty.create({ name: k, value: JSON.stringify(v) }); })
                         .toArray();
   });
 
-  return Promise.join( Promise.all(updateExistingProps), Promise.all(createNewProps) ).then( function(promises){ 
+  return Promise.join( Promise.all(updateExistingProps), Promise.all(createNewProps) ).then( function(promises){
     var existing = promises[0].map( function(setting){ return JSON.parse(setting.value); }).map( function(setting){ return JSON.parse(setting); } );
     var created  = promises[1].map( function(setting){ return JSON.parse(setting.value); }).map( function(setting){ return JSON.parse(setting); } );
-    event( 'SystemPropertiesUpdatedEvent', existing.concat(created) ); 
+    event( 'SystemPropertiesUpdatedEvent', existing.concat(created) );
+  }).then(function() {
+    if (data.props.deployment) {
+      var dev = JSON.parse(data.props.deployment);
+      config.logstash = dev.logstash;
+      config.writeConfig();
+    }
   });
 
 });
