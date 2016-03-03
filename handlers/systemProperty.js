@@ -30,6 +30,7 @@ on('SystemPropertiesSet', function (data) {
     if (data.props.deployment) {
       var dev = JSON.parse(data.props.deployment);
       config.logstash = dev.logstash;
+      config.elastic = dev.elasticsearch.hostname + ":" + dev.elasticsearch.port;
       config.writeConfig();
     }
   });

@@ -9,5 +9,6 @@
   "logstash": {
     "tcp_port": 39997,
     "udp_port": 40000
-  }
+  },
+  "elastic": "localhost:9200"
 }
