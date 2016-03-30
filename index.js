@@ -66,7 +66,9 @@ var seedPromise = ms.ready.then(function () {
         overwatch: { hostname: overwatch || "localhost" },
         rabbitmq: { hostname: rabbit && rabbit.server || "localhost",
           port: rabbit && rabbit.port || 5672 },
-        logstash: { tcp_port: logstash && (logstash.tcp_port || logstash.port) || 40000,
+        logstash: {
+          hostname: logstash && (logstash.hostname || logstash.host) || "default: as Overwatch Host",
+          tcp_port: logstash && (logstash.tcp_port || logstash.port) || 40000,
           udp_port: logstash && (logstash.udp_port || logstash.port) || 40000 },
         elasticsearch: elastic
       })
