@@ -29,6 +29,7 @@ on('SystemPropertiesSet', function (data) {
   }).then(function() {
     if (data.props.deployment) {
       var dev = JSON.parse(data.props.deployment);
+      config.overwatch = dev.overwatch.hostname;
       config.logstash = dev.logstash;
       config.elastic = dev.elasticsearch.hostname + ":" + dev.elasticsearch.port;
       config.writeConfig();
