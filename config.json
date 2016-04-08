@@ -15,5 +15,6 @@
     "udp_port": 40000
   },
   "elastic": "localhost:9200",
-  "overwatch": "localhost"
+  "overwatch": "localhost",
+  "log":{"level":"debug"}
 }
