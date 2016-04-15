@@ -48,36 +48,34 @@ var seedPromise = ms.ready.then(function () {
   return createDashboard(ksi);
 
 }).then(function () {
-    if (ms.config.ENVIRONMENT === "development") {
-      var logstash = ms.config.logstash;
-      var rabbit = ms.config.rabbit;
-      var overwatch = ms.config.overwatch;
-      var elastic = ms.config.elastic || "localhost:9200";
+    var logstash = ms.config.logstash;
+    var rabbit = ms.config.rabbit;
+    var overwatch = ms.config.overwatch;
+    var elastic = ms.config.elastic || "localhost:9200";
 
-        if (typeof elastic === "string") {
-            if (elastic.indexOf(":") > -1) {
-                var parts = elastic.split(":");
-                elastic = { hostname: parts[0], port: parts[1] };
-            } else {
-                elastic = { hostname: elastic, port: "9200" };
-            }
+    if (typeof elastic === "string") {
+        if (elastic.indexOf(":") > -1) {
+            var parts = elastic.split(":");
+            elastic = { hostname: parts[0], port: parts[1] };
+        } else {
+            elastic = { hostname: elastic, port: "9200" };
         }
-
-        return ms.command('SystemPropertiesSet', {
-            props: {
-                deployment: JSON.stringify({
-                    overwatch: { hostname: overwatch || "", session_timeout: "10 minutes" },
-                    rabbitmq: { hostname: rabbit && rabbit.server || "localhost",
-                        port: rabbit && rabbit.port || 5672 },
-                    logstash: {
-                        hostname: logstash && (logstash.hostname || logstash.host) || "",
-                        tcp_port: logstash && (logstash.tcp_port || logstash.port) || 40000,
-                        udp_port: logstash && (logstash.udp_port || logstash.port) || 40000 },
-                    elasticsearch: elastic
-                })
-            }
-        });
     }
+
+    return ms.command('SystemPropertiesSet', {
+        props: {
+            deployment: JSON.stringify({
+                overwatch: { hostname: overwatch || "", session_timeout: "10 minutes" },
+                rabbitmq: { hostname: rabbit && rabbit.server || "localhost",
+                    port: rabbit && rabbit.port || 5672 },
+                logstash: {
+                    hostname: logstash && (logstash.hostname || logstash.host) || "",
+                    tcp_port: logstash && (logstash.tcp_port || logstash.port) || 40000,
+                    udp_port: logstash && (logstash.udp_port || logstash.port) || 40000 },
+                elasticsearch: elastic
+            })
+        }
+    });
 });
 
 seedPromise.then(function () {
