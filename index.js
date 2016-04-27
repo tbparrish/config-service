@@ -52,6 +52,7 @@ var seedPromise = ms.ready.then(function () {
     var rabbit = ms.config.rabbit;
     var overwatch = ms.config.overwatch;
     var elastic = ms.config.elastic || "localhost:9200";
+    var loginSplashText = ms.config.splashText;
 
     if (typeof elastic === "string") {
         if (elastic.indexOf(":") > -1) {
@@ -72,7 +73,8 @@ var seedPromise = ms.ready.then(function () {
                     hostname: logstash && (logstash.hostname || logstash.host) || "",
                     tcp_port: logstash && (logstash.tcp_port || logstash.port) || 40000,
                     udp_port: logstash && (logstash.udp_port || logstash.port) || 40000 },
-                elasticsearch: elastic
+                elasticsearch: elastic,
+                loginSplashText: loginSplashText
             })
         }
     });
