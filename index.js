@@ -66,7 +66,13 @@ var seedPromise = ms.ready.then(function () {
     return ms.command('SystemPropertiesSet', {
         props: {
             deployment: JSON.stringify({
-                overwatch: { hostname: overwatch || "", session_timeout: "10 minutes" },
+                overwatch: {
+                    hostname: overwatch.hostname || "",
+                    session_timeout: "10 minutes",
+                    password_expiration: overwatch.password_expiration || 90,
+                    dormant_expiration: overwatch.dormant_expiration || 90,
+                    login_attempts: overwatch.login_attempts || 3
+                },
                 rabbitmq: { hostname: rabbit && rabbit.server || "localhost",
                     port: rabbit && rabbit.port || 5672 },
                 logstash: {
