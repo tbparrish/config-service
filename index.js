@@ -51,6 +51,7 @@ var seedPromise = ms.ready.then(function () {
     var logstash = ms.config.logstash;
     var rabbit = ms.config.rabbit;
     var overwatch = ms.config.overwatch;
+    var blackLantern = ms.config.blackLantern || {};
     var elastic = ms.config.elastic || "localhost:9200";
     var loginSplashText = ms.config.splashText;
 
@@ -72,6 +73,13 @@ var seedPromise = ms.ready.then(function () {
                     password_expiration: overwatch.password_expiration || 90,
                     dormant_expiration: overwatch.dormant_expiration || 90,
                     login_attempts: overwatch.login_attempts || 3
+                },
+                blackLantern: {
+                    SerialSessionTimeout: blackLantern.SerialSessionTimeout  || 300,
+                    PasswordExpiredPeriod:  blackLantern.PasswordExpiredPeriod  || 60,
+                    DormantAccountDisablePeriod: blackLantern.DormantAccountDisablePeriod  || 180,
+                    MaxLoginRetriesBeforeDisable: blackLantern.MaxLoginRetriesBeforeDisable  || 5,
+                    LegalTextBanner: "This system is for the use of authorized users only. Individuals using this computer system without authority, or in excess of their authority, are subject to having all of their activities on this system monitored and recorded by system personnel. In the course of monitoring individuals improperly using this system, or in the course of system maintenance, the activities of authorized users may also be monitored. Anyone using this system expressly consents to such monitoring and is advised that if such monitoring reveals possible evidence of criminal activity, system personnel may provide the evidence of such monitoring to law enforcement officials."
                 },
                 rabbitmq: { hostname: rabbit && rabbit.server || "localhost",
                     port: rabbit && rabbit.port || 5672 },
