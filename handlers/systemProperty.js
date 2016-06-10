@@ -8,7 +8,7 @@ on('SystemPropertiesGet', function (data) {
     });
 });
 
-on('SystemPropertiesSet', function (data) {
+on('SystemPropertiesSet', function (data, user) {
     // Currently we are allowed to set any property – might want to restrict this only to existing props
     var existingProps = models.SystemProperty.findAll({ where: { name: { $in: Object.keys(data.props) }}});
     var updateExistingProps = Promise.map(existingProps, function (prop) {
@@ -34,7 +34,7 @@ on('SystemPropertiesSet', function (data) {
                     .map( function(setting) { return JSON.parse(setting.value); })
                     .map( function(setting) { return JSON.parse(setting); });
 
-                event( 'SystemPropertiesUpdatedEvent', existing.concat(created) );
+                event( 'SystemPropertiesUpdatedEvent', existing.concat(created).concat(user) );
             })
             .then( function() {
                 if( data.props.deployment ) {
