@@ -103,4 +103,5 @@ seedPromise.then(function () {
   ms.log.info("Dashboards and properties successfully seeded.");
 }).timeout(5000).catch(function (err) {
   ms.log.error("Error while seeding data", err);
+  ms.log.debug(err.stack);
 });
