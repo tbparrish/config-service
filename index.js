@@ -73,11 +73,11 @@ var seedPromise = ms.ready.then(function () {
         props: {
             deployment: JSON.stringify({
                 overwatch: {
-                    hostname: overwatch.hostname || "",
+                    hostname: overwatch && overwatch.hostname || "",
                     session_timeout: "10 minutes",
-                    password_expiration: overwatch.password_expiration || defaultUsersSecurity.password_expiration,
-                    dormant_expiration: overwatch.dormant_expiration || defaultUsersSecurity.dormant_expiration,
-                    login_attempts: overwatch.login_attempts || defaultUsersSecurity.login_attempts
+                    password_expiration: overwatch && overwatch.password_expiration || defaultUsersSecurity.password_expiration,
+                    dormant_expiration: overwatch && overwatch.dormant_expiration || defaultUsersSecurity.dormant_expiration,
+                    login_attempts: overwatch && overwatch.login_attempts || defaultUsersSecurity.login_attempts
                 },
                 blackLantern: {
                     SerialSessionTimeout: blackLantern.SerialSessionTimeout  || 600,
