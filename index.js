@@ -56,7 +56,7 @@ var seedPromise = ms.ready.then(function () {
     var loginSplashText = ms.config.splashText;
     var defaultUsersSecurity = {
         password_expiration: 90,
-        dormant_expiration: 180,
+        dormant_expiration: 90,
         login_attempts: 3
     }
 
