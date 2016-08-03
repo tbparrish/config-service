@@ -97,6 +97,9 @@ var seedPromise = ms.ready.then(function () {
             })
         }
     });
+})
+.then(function() {
+  return ms.query("ConfigVersion");
 });
 
 seedPromise.then(function () {
