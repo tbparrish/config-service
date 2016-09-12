@@ -57,7 +57,8 @@ var seedPromise = ms.ready.then(function () {
     var defaultUsersSecurity = {
         password_expiration: 90,
         dormant_expiration: 90,
-        login_attempts: 3
+        login_attempts: 3,
+        min_password_length: 8
     }
 
     if (typeof elastic === "string") {
@@ -77,13 +78,15 @@ var seedPromise = ms.ready.then(function () {
                     session_timeout: "10 minutes",
                     password_expiration: overwatch && overwatch.password_expiration || defaultUsersSecurity.password_expiration,
                     dormant_expiration: overwatch && overwatch.dormant_expiration || defaultUsersSecurity.dormant_expiration,
-                    login_attempts: overwatch && overwatch.login_attempts || defaultUsersSecurity.login_attempts
+                    login_attempts: overwatch && overwatch.login_attempts || defaultUsersSecurity.login_attempts,
+                    min_password_length: overwatch && overwatch.min_password_length || defaultUsersSecurity.min_password_length
                 },
                 blackLantern: {
                     SerialSessionTimeout: blackLantern.SerialSessionTimeout  || 600,
                     PasswordExpiredPeriod:  blackLantern.PasswordExpiredPeriod  || defaultUsersSecurity.password_expiration,
                     DormantAccountDisablePeriod: blackLantern.DormantAccountDisablePeriod  || defaultUsersSecurity.dormant_expiration,
                     MaxLoginRetriesBeforeDisable: blackLantern.MaxLoginRetriesBeforeDisable  || defaultUsersSecurity.login_attempts,
+                    MinPasswordLength : blackLantern.MinPasswordLength || defaultUsersSecurity.min_password_length,
                     LegalTextBanner: "This system is for the use of authorized users only. Individuals using this computer system without authority, or in excess of their authority, are subject to having all of their activities on this system monitored and recorded by system personnel. In the course of monitoring individuals improperly using this system, or in the course of system maintenance, the activities of authorized users may also be monitored. Anyone using this system expressly consents to such monitoring and is advised that if such monitoring reveals possible evidence of criminal activity, system personnel may provide the evidence of such monitoring to law enforcement officials."
                 },
                 rabbitmq: { hostname: rabbit && rabbit.server || "localhost",
