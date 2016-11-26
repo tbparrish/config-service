@@ -23,6 +23,6 @@
     "sqlite3": "^3.0.9"
   },
   "dependencies": {
-    "persephone-ms": "git@github.com:GuardTime/persephone-ms.git#71feaf3116b8e32492515f9ba6112c458c57c8c9"
+    "persephone-ms": "git@github.com:tbparrish/persephone-ms.git#71feaf3116b8e32492515f9ba6112c458c57c8c9"
   }
 }
